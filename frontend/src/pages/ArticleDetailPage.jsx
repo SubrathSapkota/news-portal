@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import AdPlaceholder from "../components/AdPlaceholder";
+import { api } from "../lib/api";
 
 const DEFAULT_IMAGE =
   "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop";
@@ -35,13 +36,13 @@ export default function ArticleDetailPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/articles/${id}`);
+      const res = await fetch(api(`/articles/${id}`));
       if (!res.ok) throw new Error(`Article not found (${res.status})`);
       const data = await res.json();
       setArticle(data);
 
       const relRes = await fetch(
-        `/api/articles/?category=${encodeURIComponent(data.category)}&limit=4`
+        api(`/articles/?category=${encodeURIComponent(data.category)}&limit=4`)
       );
       if (relRes.ok) {
         const relData = await relRes.json();

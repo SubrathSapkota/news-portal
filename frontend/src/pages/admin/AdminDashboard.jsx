@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { api } from "../../lib/api";
 
 export default function AdminDashboard() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/articles/?limit=50")
+    fetch(api("/articles/?limit=50"))
       .then((r) => r.json())
       .then(setArticles)
       .catch(() => {})

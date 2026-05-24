@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { api } from "../../lib/api";
 
 const SIZE_OPTIONS = [
   { value: "leaderboard", label: "Leaderboard (728 x 90)", w: 728, h: 90 },
@@ -31,7 +32,7 @@ export default function AdManager() {
   async function fetchAds() {
     setLoading(true);
     try {
-      const res = await fetch("/api/ads/");
+      const res = await fetch(api("/ads/"));
       if (res.ok) setAds(await res.json());
     } catch (_) {
       /* ignore */
@@ -74,7 +75,7 @@ export default function AdManager() {
       form.append("link_url", formLink);
       form.append("image", formImage);
 
-      const res = await fetch("/api/ads/", { method: "POST", body: form });
+      const res = await fetch(api("/ads/"), { method: "POST", body: form });
       if (!res.ok) throw new Error(`Failed (${res.status})`);
       resetForm();
       await fetchAds();
@@ -88,13 +89,13 @@ export default function AdManager() {
   const toggleActive = async (ad) => {
     const form = new FormData();
     form.append("is_active", (!ad.is_active).toString());
-    await fetch(`/api/ads/${ad.id}`, { method: "PUT", body: form });
+    await fetch(api(`/ads/${ad.id}`), { method: "PUT", body: form });
     await fetchAds();
   };
 
   const handleDelete = async (id) => {
     if (!confirm("Delete this ad?")) return;
-    await fetch(`/api/ads/${id}`, { method: "DELETE" });
+    await fetch(api(`/ads/${id}`), { method: "DELETE" });
     await fetchAds();
   };
 
@@ -110,7 +111,7 @@ export default function AdManager() {
       const form = new FormData();
       form.append("overlay_text", editText);
       form.append("link_url", editLink);
-      await fetch(`/api/ads/${editId}`, { method: "PUT", body: form });
+      await fetch(api(`/ads/${editId}`), { method: "PUT", body: form });
       setEditId(null);
       await fetchAds();
     } finally {

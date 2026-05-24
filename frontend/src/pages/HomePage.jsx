@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import AdPlaceholder from "../components/AdPlaceholder";
+import { api } from "../lib/api";
 
 const CATEGORIES = [
   "All",
@@ -55,7 +56,7 @@ export default function HomePage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/articles/");
+      const res = await fetch(api("/articles/"));
       if (!res.ok) throw new Error(`Failed to load articles (${res.status})`);
       const data = await res.json();
       setArticles(data);

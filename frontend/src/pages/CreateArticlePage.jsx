@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../lib/api";
 
 export default function CreateArticlePage() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function CreateArticlePage() {
     setPublished(null);
 
     try {
-      const res = await fetch("/api/articles/generate", {
+      const res = await fetch(api("/articles/generate"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topic: topic.trim() }),
@@ -69,7 +70,7 @@ export default function CreateArticlePage() {
         form.append("existing_image_url", draft.image_url || "");
       }
 
-      const res = await fetch("/api/articles/publish", {
+      const res = await fetch(api("/articles/publish"), {
         method: "POST",
         body: form,
       });

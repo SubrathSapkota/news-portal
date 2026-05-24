@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 
 const FALLBACK = {
   leaderboard: {
@@ -30,7 +31,7 @@ async function fetchAd(apiSize) {
 
   try {
     const res = await fetch(
-      `/api/ads/?size=${apiSize}&active_only=true`
+      api(`/ads/?size=${apiSize}&active_only=true`)
     );
     if (!res.ok) return null;
     const ads = await res.json();
